@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            background-color: papayawhip;
+        }
+
+        #circle {
+            width: 100px;
+            height: 100px;
+            background: red;
+            border-radius: 50px;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="circle"></div>
+    <script>
+        let circle = document.querySelector("#circle");
+        // position of the cursor   
+        let mouseX, mouseY;
+        // position of the circle
+        let cirPX, cirPY;
+        // center location of circle
+        let cirCX = circle.clientWidth / 2;
+        let cirCY = circle.clientHeight / 2;
+        let steps = 15;
+
+        document.addEventListener("DOMContentLoaded", init);
+
+        function init() {
+            document.addEventListener("mousemove", mouseMove);
+            moveRAF();
+        }
+
+        function mouseMove(e) {
+            // find values of position X and Y of the cursor
+            mouseX = e.pageX;
+            mouseY = e.pageY;
+        }
+        //distance = target - source / steps
+        function moveRAF() {
+            cirPX = circle.offsetLeft;
+            cirPY = circle.offsetTop;
+            cirPX += (mouseX - cirPX - cirCX) / steps;
+            cirPY += (mouseY - cirPY - cirCY) / steps;
+            circle.style.left = cirPX + "px";
+            circle.style.top = cirPY + "px";
+            requestAnimationFrame(moveRAF);
+        }
+
+    </script>
+</body>
+
+</html>
