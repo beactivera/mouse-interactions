@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            background-color: grey;
+        }
+
+        #greenyellow,
+        #firebrick,
+        #cyan {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            position: absolute;
+        }
+
+        #greenyellow {
+            background: greenyellow;
+        }
+
+        #firebrick {
+            background: firebrick;
+        }
+
+        #cyan {
+            background: aqua;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="greenyellow"></div>
+    <div id="firebrick"></div>
+    <div id="cyan"></div>
+
+    <script>
+        let greenyellow = document.querySelector("#greenyellow");
+        let firebrick = document.querySelector("#firebrick");
+        let cyan = document.querySelector("#cyan");
+
+        let mouseX, mouseY;
+        let mycCX = greenyellow.clientWidth / 2;
+        let mycCY = greenyellow.clientHeight / 2;
+        let winCX = window.innerWidth / 2;
+        let winCY = window.innerHeight / 2;
+        let RAF;
+        let moving = false;
+
+        document.addEventListener("DOMContentLoaded", init);
+
+        function init() {
+            greenyellow.style.left = winCX - mycCX + "px";
+            greenyellow.style.top = winCY - mycCY + "px";
+            firebrick.style.left = winCX - mycCX + "px";
+            firebrick.style.top = winCY - mycCY + "px";
+            cyan.style.left = winCX - mycCX + "px";
+            cyan.style.top = winCY - mycCY + "px";
+
+            document.addEventListener("mousemove", mouseMove);
+
+            greenyellow.addEventListener("click", toggleRAF);
+            firebrick.addEventListener("click", toggleRAF);
+            cyan.addEventListener("click", toggleRAF);
+        }
+
+        function toggleRAF(e) {
+            if (moving) {
+                cancelAnimationFrame(RAF);
+            } else {
+                RAF = requestAnimationFrame(moveRAF);
+            }
+            moving = !moving;
+        }
+
+        function mouseMove(e) {
+            mouseX = e.pageX;
+            mouseY = e.pageY;
+        }
+        //distance = target - source / steps
+        function moveRAF() {
+            move(greenyellow, 120);
+            move(firebrick, 50);
+            move(cyan, 10);
+            RAF = requestAnimationFrame(moveRAF);
+        }
+
+        function move(elm, steps) {
+            let elmPX = elm.offsetLeft;
+            let elmPY = elm.offsetTop;
+
+            elmPX += (winCX - mouseX) / steps;
+            elmPY += (winCY - mouseY) / steps;
+
+
+            //if element is smaller than stage
+            if (elmPX < 0) {
+                elmPX = 0;
+            }
+            if (elmPY < 0) {
+                elmPY = 0;
+            }
+            if (elmPX > window.innerWidth - elm.offsetWidth) {
+                elmPX = window.innerWidth - elm.offsetWidth;
+            }
+            if (elmPY > window.innerHeight - elm.offsetHeight) {
+                elmPY = window.innerHeight - elm.offsetHeight;
+            }
+
+            elm.style.left = elmPX + "px";
+            elm.style.top = elmPY + "px";
+        }
+
+    </script>
+</body>
+
+</html>
